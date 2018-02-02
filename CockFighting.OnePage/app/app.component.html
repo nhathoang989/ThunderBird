@@ -1,0 +1,275 @@
+﻿<div class="page"
+     [ngClass]="isAuth ? '' : 'modal-open'">
+    <div [hidden]="!isLoading" class="loading">Loading&#8230;</div>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand js-scroll-trigger" href="#page-top">Cock Fighting</a>
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                Menu
+                <i class="fa fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="#register">CREATE  ENTRY</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="#users">Teams</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="#matches">Matches</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="masthead">
+        <div class="container">
+            <div class="intro-text">
+                <div class="intro-lead-in">Welcome To Cockfighting Derby  Matching Tool!</div>
+                <div class="intro-heading">It's Nice To Meet You</div>
+                <a class="btn btn-xl js-scroll-trigger" href="#register">CREATE  ENTRY</a>
+            </div>
+        </div>
+    </header>
+    <section id="register">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">CREATE  ENTRY</h2>                    
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label ">Available Teams</label>
+                                <select [(ngModel)]="register" class="form-control d-inline col-sm-7">
+                                    <option *ngFor="let register of registers" [ngValue]="register">{{register.phone}}</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label ">User Name</label>
+                                <input [(ngModel)]="register.userName" placeholder="Name" class="col-sm-7 d-inline form-control" />
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label ">Phone</label>
+                                <input [readonly]="register.isEdit" [(ngModel)]="register.phone" placeholder="Phone" class="col-sm-7 d-inline form-control" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Teams</label>
+                                <select [(ngModel)]="register.team" class="form-control  d-inline col-sm-7">
+                                    <option *ngFor="let team of register.teams" [ngValue]="team">{{team.name}}</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label ">Team Name</label>
+                                <input input [(ngModel)]="register.team.name" placeholder="team name" class="col-sm-7 d-inline form-control" />
+                            </div>
+                            <div *ngFor="let cock of register.team.cocks" class="form-group">
+                                <label class="col-sm-4 control-label ">Cock</label>
+                                <input [(ngModel)]="cock.code" placeholder="code" class="col-sm-3 d-inline form-control" />
+                                <input type="number" [(ngModel)]="cock.weight" placeholder="weight" class="col-sm-3 d-inline form-control" />
+                            </div>
+                            <div class="col-lg-12 text-center bottom10">
+                                <button class="btn btn-success" [hidden]="register.team.id==0" (click)="addTeam()">Add Team</button>
+                                <button class="btn btn-danger" [hidden]="register.phone==''" (click)="removeTeam(register.team.id)">Remove Team</button>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 text-center">
+                            <input class="btn btn-success" type="button" [hidden]="register.phone==''" (click)="submitRegister()" value="Save" />
+                            <input class="btn btn-default" type="button" (click)="reset()" value="Reset" />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Grid -->
+    <section class="bg-dark" id="users">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center text-white">
+                    <h2 class="section-heading">Teams</h2>
+                    <h3 class="section-subheading text-muted"></h3>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-lg-12 portfolio-item text-white bottom5 border-light"
+                     *ngFor="let user of registers" (click)="onSelect(user)">
+                    <div class="portfolio-caption col-md-12 row">
+                        <span class="col-4">{{user.userName}}</span>
+                        <p class="col-4 text-muted">{{user.phone}}</p>
+                        <div class="col-4">
+                            <a class="btn btn-sm btn-info right5" data-toggle="collapse" href="#teams-{{user.phone}}"><i class="fa fa-eye"></i></a>
+                            <button class="btn btn-sm btn-danger" (click)="removeRegister(user.phone)"><i class="fa fa-remove"></i></button>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div id="teams-{{user.phone}}" class="collapse top10">
+                            <div *ngFor="let team of user.teams" class="col-md-12">
+                                <div class="row">
+                                    <div class="col-5">
+                                        {{team.name}}
+                                    </div>
+                                    <div class="col-7">
+                                        <div class="row" *ngFor="let cock of team.cocks">
+                                            <div class="col-5">
+                                                <span>{{cock.code}}</span>
+                                            </div>
+                                            <div class="col-5">
+                                                <span>{{cock.weight}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-12 text-center mb-lg-3 top10">
+                    <input type="button" class="btn btn-success " (click)="exportTeams()" value="Export Teams" />
+                    <br />
+                    <a href="{{teamsExcel}}" target="_blank">{{teamsExcel}}</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="matches">
+        <div class="container" style="overflow:auto">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">Matches</h2>
+                    <h3 class="section-subheading text-muted"></h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center bottom10">
+                    <div class="row container">                        
+                        <input class="col-3 form-control right5" type="number" [(ngModel)]="diff" placeholder="Offset" />
+                        <label class="col-3 form-check-label"><input class=" form-check-input" type="checkbox" [(ngModel)]="isRegen" /> Regen</label>
+                        <a class="btn btn-outline-success right5" (click)="genMatches()">
+                            <i class="fa fa-calculator"></i>
+                        </a>
+                        <a class="btn btn-warning" (click)="exportMatches()" alias="Export Excel">
+                            <i class="fa fa-address-book"></i>
+                        </a>
+                        <a class="col-12" href="{{excel}}" target="_blank">{{excel}}</a>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Tên đội
+                                </th>
+                                <th>
+                                    Chủ đội
+                                </th>
+                                <th>
+                                    Lb - Weight
+                                </th>
+                                <th>
+                                    Lb - Weight
+                                </th>
+                                <th>
+                                    Chủ đội
+                                </th>
+                                <th>
+                                    Tên đội
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr [hidden]="matches.length > 0">
+                                <td colspan="8">
+                                    <p class="alert-warning text-center">
+                                        No Matches Found! Please Regenerate to get random matches!
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr *ngFor="let match of matches">
+                                <td>
+                                    {{match.cock1.teamName}}
+                                </td>
+                                <td>
+                                    {{match.cock1.userName}}
+                                </td>
+                                <td>
+                                    {{match.cock1.code}} - {{match.cock1.weight}}
+                                </td>
+                                <td>
+                                    {{match.cock2.code}} - {{match.cock2.weight}}
+                                </td>
+                                <td>
+                                    {{match.cock2.userName}}
+                                </td>
+                                <td>
+                                    {{match.cock2.teamName}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="portfolio-modal modal fade" id="loginModal" tabindex="-1" role="dialog" aria-hidden="false"
+         [style.display]="isAuth ? 'none' : 'block'"
+         [ngClass]="isAuth ? '' : 'show'">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!--<div class="close-modal" data-dismiss="modal">
+                  <div class="lr">
+                    <div class="rl"></div>
+                  </div>
+                </div>-->
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12 mx-auto">
+                            <div class="modal-body">
+                                <!-- Project Details Go Here -->
+                                <h2>Login</h2>
+                                <p class="item-intro text-muted">Login to Cockfighting Derby  Matching Tool.</p>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <input [(ngModel)]="userName" placeholder="Username" class="col-sm-7 d-inline form-control"
+                                               (keydown.enter)="login()" />
+                                    </div>
+
+                                    <div class="form-group">
+                                        <input [(ngModel)]="password" placeholder="Password" type="password" class="col-sm-7 d-inline form-control"
+                                               (keydown.enter)="login()" />
+                                    </div>
+                                    <p class="alert-danger text-center">{{errorMessage}}</p>
+                                </div>
+                                <button (click)="login()" class="btn btn-primary" data-dismiss="modal" type="button">
+                                    <i class="fa fa-unlock"></i>
+                                    Login
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
