@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="d74e3df3b9a245abae45f6c913ed1fa8" Name="Diagram1">
+        <EntityTypeShape EntityType="CockFightingModel.Cock" Width="1.5" PointX="5.25" PointY="1" />
+        <EntityTypeShape EntityType="CockFightingModel.Match" Width="1.5" PointX="7.5" PointY="1.125" />
+        <EntityTypeShape EntityType="CockFightingModel.sysdiagram" Width="1.5" PointX="0.75" PointY="4.75" />
+        <EntityTypeShape EntityType="CockFightingModel.Team" Width="1.5" PointX="3" PointY="1.25" />
+        <EntityTypeShape EntityType="CockFightingModel.User" Width="1.5" PointX="0.75" PointY="1.25" />
+        <AssociationConnector Association="CockFightingModel.FK_Cock_Team" />
+        <AssociationConnector Association="CockFightingModel.FK_Match_Cock" />
+        <AssociationConnector Association="CockFightingModel.FK_Match_Cock1" />
+        <AssociationConnector Association="CockFightingModel.FK_Team_User" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
